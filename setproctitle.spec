@@ -9,6 +9,7 @@ Group:		System/Libraries
 License:	LGPL
 URL:		http://www.altlinux.ru/
 Source0:	%{name}-%{version}.tar.bz2
+BuildRoot:	%{_tmppath}/%{name}-%{version}-root
 
 %description
 This library provides setproctitle function for setting the
