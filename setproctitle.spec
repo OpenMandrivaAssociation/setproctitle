@@ -4,7 +4,7 @@
 Summary:	A setproctitle implementation
 Name:		setproctitle
 Version:	0.1
-Release:	%mkrel 2
+Release:	%mkrel 4
 Group:		System/Libraries
 License:	LGPL
 URL:		http://www.altlinux.ru/
