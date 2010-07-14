@@ -1,15 +1,18 @@
 %define	major 0
 %define libname	%mklibname setproctitle %{major}
+%define	devname	%mklibname setproctitle -d
 
 Summary:	A setproctitle implementation
 Name:		setproctitle
-Version:	0.1
-Release:	%mkrel 6
+Version:	0.3.2
+Release:	%mkrel 1
 Group:		System/Libraries
-License:	LGPL
+License:	LGPL/BSD-style
 URL:		http://www.altlinux.ru/
-Source0:	%{name}-%{version}.tar.bz2
-BuildRoot:	%{_tmppath}/%{name}-%{version}-root
+# http://sisyphus.ru/cgi-bin/srpm.pl/Sisyphus/setproctitle/getsource/0
+Source0:	%{name}-%{version}.tar.xz
+Patch0:		setproctitle-0.3.2-extra-ld-flags.patch
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 This library provides setproctitle function for setting the
@@ -23,61 +26,38 @@ Group:          System/Libraries
 This library provides setproctitle function for setting the
 invoking process's title.
 
-%package -n	%{libname}-devel
+%package -n	%{devname}
 Summary:	Development environment for %{name}
 Group:		Development/C
 Provides:	%{name}-devel = %{version}-%{release}
-Provides:	lib%{name}-devel = %{version}-%{release}
 Requires:	%{libname} = %{version}-%{release}
+Obsoletes:	%{mklibname setproctitle -d 0}
 
-%description -n	%{libname}-devel
-This library provides setproctitle function for setting the
-invoking process's title.
-
+%description -n	%{devname}
 This package contains development files required to build
-%{name} based software.
+setproctitle-based software.
 
 %prep
-
-%setup -q -n %{name}-%{version}
+%setup -q
+%patch0 -p1 -b .ldflags~
 
 %build
-
-make RPM_OPT_FLAGS="%{optflags} -fPIC -DPIC"
+%make EXTRA_LDFLAGS=%{ldflags}
 
 %install
-[ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
-
-install -d %{buildroot}%{_libdir}
-install -d %{buildroot}%{_includedir}
-install -d %{buildroot}%{_mandir}/man3
-
-install -m0755 libsetproctitle.so.%{version} %{buildroot}%{_libdir}/
-ln -snf libsetproctitle.so.%{version} %{buildroot}%{_libdir}/libsetproctitle.so.%{major}
-ln -snf libsetproctitle.so.%{version} %{buildroot}%{_libdir}/libsetproctitle.so
-
-install -m0644 setproctitle.h %{buildroot}%{_includedir}/
-install -m0644 setproctitle.3 %{buildroot}%{_mandir}/man3/
-
-%if %mdkversion < 200900
-%post -n %{libname} -p /sbin/ldconfig
-%endif
-
-%if %mdkversion < 200900
-%postun -n %{libname} -p /sbin/ldconfig
-%endif
+rm -rf %{buildroot}
+%makeinstall
 
 %clean
-[ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
+rm -rf %{buildroot}
 
 %files -n %{libname}
 %defattr(-,root,root)
+%doc LICENSE README
 %{_libdir}/*.so.*
 
-%files -n %{libname}-devel
+%files -n %{devname}
 %defattr(-,root,root)
 %{_includedir}/*
 %{_libdir}/*.so
 %{_mandir}/man3/*
-
-
