@@ -42,7 +42,7 @@ setproctitle-based software.
 %patch0 -p1 -b .ldflags~
 
 %build
-%make EXTRA_LDFLAGS=%{ldflags}
+%make CFLAGS="%{optflags}" LDFLAGS="%{ldflags}"
 
 %install
 rm -rf %{buildroot}
