@@ -1,0 +1,28 @@
+diff -p -up setproctitle-0.3.2/Makefile.ldflags~ setproctitle-0.3.2/Makefile
+--- setproctitle-0.3.2/Makefile.ldflags~	2008-06-11 20:20:24.000000000 +0200
++++ setproctitle-0.3.2/Makefile	2010-07-15 18:54:14.014665433 +0200
+@@ -41,9 +41,9 @@ WARNINGS = -W -Wall -Waggregate-return -
+ 	-Wmissing-format-attribute -Wmissing-noreturn \
+ 	-Wmissing-prototypes -Wpointer-arith -Wredundant-decls \
+ 	-Wshadow -Wstrict-prototypes -Wwrite-strings
+-CPPFLAGS = -std=gnu99 $(WARNINGS) -D_GNU_SOURCE
+-CFLAGS = $(RPM_OPT_FLAGS) -fPIC
+-LDFLAGS = -shared -nostartfiles -Wl,-soname,$(SONAME),--version-script,$(MAP),-z,defs,-z,now # ,-stats
++ALL_CPPFLAGS = $(CPPFLAGS) -std=gnu99 $(WARNINGS) -D_GNU_SOURCE
++ALL_CFLAGS = $(CFLAGS) -fPIC
++ALL_LDFLAGS = $(LDFLAGS) -shared -nostartfiles -Wl,-soname,$(SONAME),--version-script,$(MAP),-z,defs,-z,now # ,-stats
+ 
+ all: $(TARGETS)
+ 
+@@ -51,9 +51,10 @@ $(SONAME) $(SHLIB_NAME): $(SHLIB)
+ 	ln -sf $< $@
+ 
+ $(SHLIB): $(PROJECT).o $(MAP)
+-	$(LINK.o) $< $(OUTPUT_OPTION)
++	$(CC) $(ALL_LDFLAGS) $< $(OUTPUT_OPTION)
+ 
+ $(PROJECT).o: $(PROJECT).c setproctitle.h
++	$(CC) $(ALL_CPPFLAGS) $(ALL_CFLAGS) -c $< $(OUTPUT_OPTION)
+ 
+ install:
+ 	$(INSTALL) -pD -m755 $(SHLIB) $(DESTDIR)$(libdir)/$(SHLIB)
