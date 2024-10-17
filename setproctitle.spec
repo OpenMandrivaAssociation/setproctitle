@@ -8,7 +8,7 @@ Version:	0.3.2
 Release:	3
 Group:		System/Libraries
 License:	LGPL/BSD-style
-URL:		http://www.altlinux.ru/
+URL:		https://www.altlinux.ru/
 # http://sisyphus.ru/cgi-bin/srpm.pl/Sisyphus/setproctitle/getsource/0
 Source0:	%{name}-%{version}.tar.xz
 Patch0:		setproctitle-0.3.2-extra-ld-flags.patch
