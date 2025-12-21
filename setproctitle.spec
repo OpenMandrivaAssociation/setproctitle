@@ -14,6 +14,7 @@ Source0:	%{name}-%{version}.tar.xz
 Patch0:		setproctitle-0.3.2-extra-ld-flags.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
+BuildRequires:	make
 %description
 This library provides setproctitle function for setting the
 invoking process's title.
